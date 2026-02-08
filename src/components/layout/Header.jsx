@@ -1,38 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
-import { Button } from '../ui/button';
+import React, { useState, useEffect } from "react";
+import { Menu, X } from "lucide-react";
+import { Button } from "../ui/button";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const navItems = [
-    { label: 'About', href: '#about' },
-    { label: 'Skills', href: '#skills' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'Contact', href: '#contact' },
+    { label: "About", href: "#about" },
+    { label: "Skills", href: "#skills" },
+    { label: "Projects", href: "#projects" },
+    { label: "Contact", href: "#contact" },
   ];
 
   const scrollToSection = (href) => {
     setIsMobileMenuOpen(false);
     const element = document.querySelector(href);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'glass py-4' : 'bg-transparent py-6'
+        isScrolled ? "glass py-4" : "bg-transparent py-6"
       }`}
     >
       <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
@@ -41,7 +42,10 @@ const Header = () => {
           href="#hero"
           onClick={(e) => {
             e.preventDefault();
-            scrollToSection('#hero');
+            if (window.location.pathname !== "/") {
+              navigate("/", { state: { scrollTo: "#hero" } });
+            }
+            scrollToSection("#hero");
           }}
           className="text-xl font-semibold tracking-tight hover:text-cyan-400 transition-colors duration-300"
         >
@@ -58,6 +62,9 @@ const Header = () => {
               href={item.href}
               onClick={(e) => {
                 e.preventDefault();
+                if (window.location.pathname !== "/") {
+                  navigate("/", { state: { scrollTo: item.href } });
+                }
                 scrollToSection(item.href);
               }}
               className="text-sm text-gray-400 hover:text-white transition-colors duration-300 relative group"
@@ -67,7 +74,12 @@ const Header = () => {
             </a>
           ))}
           <Button
-            onClick={() => scrollToSection('#contact')}
+            onClick={() => {
+              if (window.location.pathname !== "/") {
+                navigate("/", { state: { scrollTo: "#contact" } });
+              }
+              scrollToSection("#contact");
+            }}
             className="bg-cyan-500 hover:bg-cyan-400 text-gray-900 font-medium px-5 py-2 text-sm transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/25"
           >
             Get in Touch
@@ -93,6 +105,9 @@ const Header = () => {
                 href={item.href}
                 onClick={(e) => {
                   e.preventDefault();
+                  if (window.location.pathname !== "/") {
+                    navigate("/", { state: { scrollTo: item.href } });
+                  }
                   scrollToSection(item.href);
                 }}
                 className="text-gray-400 hover:text-white transition-colors py-2"
@@ -101,7 +116,12 @@ const Header = () => {
               </a>
             ))}
             <Button
-              onClick={() => scrollToSection('#contact')}
+              onClick={() => {
+                if (window.location.pathname !== "/") {
+                  navigate("/", { state: { scrollTo: "#contact" } });
+                }
+                scrollToSection("#contact");
+              }}
               className="bg-cyan-500 hover:bg-cyan-400 text-gray-900 font-medium mt-2 w-full"
             >
               Get in Touch
